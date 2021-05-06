@@ -1,0 +1,31 @@
+{% extends "layout.html" %}
+{% block content %}
+<form action="/trees/new" method="POST">
+    <div class="row">
+        <div class="col">
+            <label for="treeNum">Tree Number</label>
+            <input id="treeNum" type="text" class="form-control" placeholder="Tree Number" name="treeNum">
+        </div>
+        <div class="col">
+            <label for="girth">Girth (Inches)</label>
+            <input id="girth" type="text" class="form-control" placeholder="Girth (Inches)"
+                   name="girth">
+        </div>
+        <div class="col">
+            <label for="height">Height (feet)</label>
+            <input id="height" type="text" class="form-control" placeholder="Height (Feet)" name="height">
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col">
+            <label for="Volume_ft_3">Volume (Ft^3)</label>
+            <input id="Volume_ft_3" type="text" class="form-control" placeholder="Volume (Ft^3)" name="Volume_ft_3">
+        </div>
+    </div>
+    <button type="submit" class="btn btn-success">Create</button>
+
+</form>
+
+{% endblock %}
+
