@@ -133,13 +133,12 @@ def api_delete(tree_id) -> str:
 
 
 @app.route('/api/v1/trees/chart', methods=['GET'])
-def api_retrieve(tree_id) -> str:
+def chart():
+    user = {'username': 'Andrew'}
     cursor = mysql.get_db().cursor()
-    cursor.execute('SELECT * FROM trees WHERE id=%s', tree_id)
+    cursor.execute('SELECT * FROM trees')
     result = cursor.fetchall()
-    json_result = json.dumps(result)
-    resp = Response(json_result, status=200, mimetype='application/json')
-    return resp
+    return render_template('data.html', title='Cool Tree Data')
 
 
 if __name__ == '__main__':
