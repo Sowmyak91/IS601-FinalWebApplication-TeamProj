@@ -5,12 +5,12 @@
 </head>
 <body>
 <form action="/api/v1/trees/chart" method="post">
-<canvas id="chart" width="400" height="400"></canvas>
+<canvas id="chart" width="100" height="100"></canvas>
 <script>
 
     const ctx = document.getElementById('chart');
     const xlabels = [];
-    const ydata =
+    const yGirth = [];
 
     chartIt();
 
@@ -21,34 +21,18 @@
             data: {
                 labels: xlabels,
                 datasets: [{
-                    label: 'Data From Some Trees',
-                    data: [ydata],
+                    label: 'Some girthy data from some cool trees',
+                    data: yGirth,
                     backgroundColor: [
-                        'rgba(255, 99, 132, 0.2)',
-                        'rgba(54, 162, 235, 0.2)',
-                        'rgba(255, 206, 86, 0.2)',
-                        'rgba(75, 192, 192, 0.2)',
-                        'rgba(153, 102, 255, 0.2)',
-                        'rgba(255, 159, 64, 0.2)'
-                    ],
-                    borderColor: [
-                        'rgba(255, 99, 132, 1)',
-                        'rgba(54, 162, 235, 1)',
-                        'rgba(255, 206, 86, 1)',
-                        'rgba(75, 192, 192, 1)',
-                        'rgba(153, 102, 255, 1)',
-                        'rgba(255, 159, 64, 1)'
+                        'rgba(250,112,0,0.5)',
+                        'rgba(83,222,238,0.5)',
+                        'rgba(241,140,192,0.5)'
+
+
                     ],
                     borderWidth: 1
                 }]
             },
-            options: {
-                scales: {
-                    y: {
-                        stacked: true
-                    }
-                }
-            }
         });
     }
 
@@ -56,20 +40,66 @@
         const response = await fetch('/api/v1/trees');
         const treeData = await response.text();
 
-        console.log(treeData)
+        const table = treeData.split('},');
+        table.forEach(row => {
+            const columns = row.split(',');
+            const treeid = columns[0];
+            const treeNumber = columns[1];
+            xlabels.push(treeNumber);
+            const girth = columns[2].slice(10);
+            yGirth.push(girth);
+            const height = columns[3];
+            const volume = columns[4];
+            console.log(treeid, treeNumber, girth, height, volume);
+        })
+    }
+</script>
+</form>
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+<form>
+<script>
+
+    const ctx1 = document.getElementById('chart');
+    const yHeight = [];
+
+    chartIt();
+
+    async function chartIt() {
+        await getData();
+        const myChart = new Chart(ctx1, {
+            type: 'bar',
+            data: {
+                labels: xlabels,
+                datasets: [{
+                    label: 'Some vertical data from some cool trees',
+                    data: yHeight,
+                    backgroundColor: [
+                        'rgba(250,112,0,0.5)',
+                        'rgba(83,222,238,0.5)',
+                        'rgba(241,140,192,0.5)'
+
+
+                    ],
+                    borderWidth: 1
+                }]
+            },
+        });
+    }
+
+    async function getData() {
+        const response = await fetch('/api/v1/trees');
+        const treeData = await response.text();
 
         const table = treeData.split('},');
         table.forEach(row => {
-            const columns = row.split(',').slice('1');
-            const treeNumber = columns[0];
+            const columns = row.split(',');
+            const treeid = columns[0];
+            const treeNumber = columns[1];
             xlabels.push(treeNumber);
-            const girth = columns[1];
-            ydata.push(girth);
-            const height = columns[2];
-            ydata.push(height);
-            const volume = columns[3];
-            ydata.push(volume);
-            console.log(treeNumber, girth, height, volume);
+            const girth = columns[2].slice(9);
+            const height = columns[3].slice(9);
+            yHeight.push(height);
+            const volume = columns[4];
         })
     }
 </script>
