@@ -5,7 +5,7 @@
 </head>
 <body>
 <form action="/api/v1/trees/chart" method="post">
-<canvas id="chart" width="100" height="100"></canvas>
+<canvas id="chart" width="200" height="200"></canvas>
 <script>
 
     const ctx = document.getElementById('chart');
@@ -55,55 +55,8 @@
     }
 </script>
 </form>
-<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
-<form>
-<script>
-
-    const ctx1 = document.getElementById('chart');
-    const yHeight = [];
-
-    chartIt();
-
-    async function chartIt() {
-        await getData();
-        const myChart = new Chart(ctx1, {
-            type: 'bar',
-            data: {
-                labels: xlabels,
-                datasets: [{
-                    label: 'Some vertical data from some cool trees',
-                    data: yHeight,
-                    backgroundColor: [
-                        'rgba(250,112,0,0.5)',
-                        'rgba(83,222,238,0.5)',
-                        'rgba(241,140,192,0.5)'
-
-
-                    ],
-                    borderWidth: 1
-                }]
-            },
-        });
-    }
-
-    async function getData() {
-        const response = await fetch('/api/v1/trees');
-        const treeData = await response.text();
-
-        const table = treeData.split('},');
-        table.forEach(row => {
-            const columns = row.split(',');
-            const treeid = columns[0];
-            const treeNumber = columns[1];
-            xlabels.push(treeNumber);
-            const girth = columns[2].slice(9);
-            const height = columns[3].slice(9);
-            yHeight.push(height);
-            const volume = columns[4];
-        })
-    }
-</script>
-
-</form>
+<br><br><br><br><br> <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+<h1>Here is a comparison for all of the trees in the chart based on their girth. Some of them
+get pretty big so I picked this one to list.</h1>
 </body>
 {% endblock %}
