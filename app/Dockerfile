@@ -12,4 +12,4 @@ RUN pip install flask-mysql
 
 COPY . /app
 
-CMD python app.py
+CMD python statapp.py
