@@ -118,7 +118,7 @@ def register():
 def otpVerify():
     form = RegisterForm(request.form)
     email = request.form["email"]
-    send_email("sowmya1552@gmail.com", [email], "OTP Verificaton")
+    send_email("sowmya1552@gmail.com", ['email'], "OTP Verificaton")
     return render_template('verify.html')
 
 
