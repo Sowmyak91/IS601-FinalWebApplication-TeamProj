@@ -1,19 +1,22 @@
 from flask import Flask, render_template, flash, redirect, url_for, session, request, logging
-# from data import Articles
-from flask_mysqldb import MySQL
+#from data import Articles
+from flaskext.mysql import MySQL
 from wtforms import Form, StringField, TextAreaField, PasswordField, validators
 from passlib.hash import sha256_crypt
 from functools import wraps
-from random import *
+from random import * 
 from typing import List
 import smtplib
+import mysql.connector
 
+app = Flask(__name__, template_folder='templates')
 SMTP_HOST = "smtp.gmail.com"
-SMTP_PORT = 587
-app = Flask(__name__)
-otp = randint(000000, 999999)
+SMTP_PORT = 587 
+
+otp = randint(000000,999999)
 # Config MySQL
-app.config['MYSQL_HOST'] = 'localhost'
+
+app.config['MYSQL_HOST'] = 'db'
 app.config['MYSQL_USER'] = 'root'
 app.config['MYSQL_PASSWORD'] = 'root@123$'
 app.config['MYSQL_DB'] = 'myflaskapp'
@@ -21,8 +24,7 @@ app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 # init MYSQL
 mysql = MySQL(app)
 
-
-# Articles = Articles()
+#Articles = Articles()
 
 # Index
 @app.route('/')
@@ -56,7 +58,7 @@ def articles():
     cur.close()
 
 
-# Single Article
+#Single Article
 @app.route('/article/<string:id>/')
 def article(id):
     # Create cursor
@@ -86,7 +88,7 @@ class RegisterForm(Form):
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     form = RegisterForm(request.form)
-    otp = randint(000000, 999999)
+    otp = randint(000000,999999)
     if request.method == 'POST' and form.validate():
         name = form.name.data
         email = form.email.data
@@ -97,8 +99,7 @@ def register():
         cur = mysql.connection.cursor()
 
         # Execute query
-        cur.execute("INSERT INTO users(name, email, username, password) VALUES(%s, %s, %s, %s)",
-                    (name, email, username, password))
+        cur.execute("INSERT INTO users(name, email, username, password) VALUES(%s, %s, %s, %s)", (name, email, username, password))
 
         # Commit to DB
         mysql.connection.commit()
@@ -108,29 +109,26 @@ def register():
 
         flash('You are now registered and can log in', 'success')
 
-        return redirect(url_for('login'))
+        return redirect(url_for('login.html'))
         return render_template('verify.html')
     return render_template('register.html', form=form)
-
 
 # Email Verification.
 @app.route('/verify', methods=['GET', 'POST'])
 def otpVerify():
     form = RegisterForm(request.form)
-    email = request.form["email"]
-    send_email("sowmya1552@gmail.com", [email], "OTP Verificaton")
-    return render_template('verify.html')
+    email = request.form["email"]   
+    send_email("sowmya1552@gmail.com",[email],"OTP Verificaton")
+    return render_template('verify.html')  
 
-
-# OTP Validation
+#OTP Validation
 @app.route('/validate', methods=['GET', 'POST'])
 def otpValidate():
-    user_otp = request.form['OTP']
-    if otp == int(user_otp):
-        return render_template('VerifiStatus.html')
-    return render_template('VerifyFailed.html')
-
-
+    user_otp = request.form['OTP']  
+    if otp == int(user_otp):  
+       return render_template('VerifiStatus.html')
+    return render_template('VerifyFailed.html')  
+    
 # User login
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -167,8 +165,7 @@ def login():
             error = 'Username not found'
             return render_template('login.html', error=error)
 
-    return render_template('verify.html')
-
+    return render_template('login.html')
 
 # Check if user logged in
 def is_logged_in(f):
@@ -179,9 +176,7 @@ def is_logged_in(f):
         else:
             flash('Unauthorized, Please login', 'danger')
             return redirect(url_for('login'))
-
     return wrap
-
 
 # Logout
 @app.route('/logout')
@@ -191,7 +186,6 @@ def logout():
     flash('You are now logged out', 'success')
     return redirect(url_for('login'))
 
-
 # Dashboard
 @app.route('/dashboard')
 @is_logged_in
@@ -200,7 +194,7 @@ def dashboard():
     cur = mysql.connection.cursor()
 
     # Get articles
-    # result = cur.execute("SELECT * FROM articles")
+    #result = cur.execute("SELECT * FROM articles")
     # Show articles only from the user logged in
     result = cur.execute("SELECT * FROM articles WHERE author = %s", [session['username']])
 
@@ -214,12 +208,10 @@ def dashboard():
     # Close connection
     cur.close()
 
-
 # Article Form Class
 class ArticleForm(Form):
     title = StringField('Title', [validators.Length(min=1, max=200)])
     body = TextAreaField('Body', [validators.Length(min=30)])
-
 
 # Add Article
 @app.route('/add_article', methods=['GET', 'POST'])
@@ -234,12 +226,12 @@ def add_article():
         cur = mysql.connection.cursor()
 
         # Execute
-        cur.execute("INSERT INTO articles(title, body, author) VALUES(%s, %s, %s)", (title, body, session['username']))
+        cur.execute("INSERT INTO articles(title, body, author) VALUES(%s, %s, %s)",(title, body, session['username']))
 
         # Commit to DB
         mysql.connection.commit()
 
-        # Close connection
+        #Close connection
         cur.close()
 
         flash('Article Created', 'success')
@@ -276,11 +268,11 @@ def edit_article(id):
         cur = mysql.connection.cursor()
         app.logger.info(title)
         # Execute
-        cur.execute("UPDATE articles SET title=%s, body=%s WHERE id=%s", (title, body, id))
+        cur.execute ("UPDATE articles SET title=%s, body=%s WHERE id=%s",(title, body, id))
         # Commit to DB
         mysql.connection.commit()
 
-        # Close connection
+        #Close connection
         cur.close()
 
         flash('Article Updated', 'success')
@@ -288,7 +280,6 @@ def edit_article(id):
         return redirect(url_for('dashboard'))
 
     return render_template('edit_article.html', form=form)
-
 
 # Delete Article
 @app.route('/delete_article/<string:id>', methods=['POST'])
@@ -303,24 +294,20 @@ def delete_article(id):
     # Commit to DB
     mysql.connection.commit()
 
-    # Close connection
+    #Close connection
     cur.close()
 
     flash('Article Deleted', 'success')
 
     return redirect(url_for('dashboard'))
-
-
 def send_email(from_addr: str, to_addr: List[str], subject: str) -> None:
     msg = f"From: {from_addr}\r\nTo: {','.join(to_addr)}\r\nSubject: {subject}\r\n"
 
     with smtplib.SMTP(host=SMTP_HOST, port=SMTP_PORT) as server:
         server.starttls()
         server.login("sowmya1552@gmail.com", "dzorlhagwiseusud")
-
+        
         server.sendmail(from_addr, to_addr, str(otp))
-
-
 if __name__ == '__main__':
-    app.secret_key = 'secret123'
+    app.secret_key='secret123'
     app.run(debug=True)

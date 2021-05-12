@@ -1,0 +1,6 @@
+Flask
+Flask-MySQL
+MySQL
+mysql-connector
+Flask-WTF
+Flask-Passlib
