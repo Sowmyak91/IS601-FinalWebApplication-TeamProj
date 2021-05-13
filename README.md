@@ -1,8 +1,10 @@
 ## Final Web Application - Feature 2 by Sowmya Kothapalli
 #### Create a login and registration process that includes email verification.  You can use a service like SendGrid to send email and you should look for a Flask Plugin to help.
 
+* [Feature 2 Document with screenshots](Feature2-screenshots.docx)
 
-#### Step 1: Move to the branch for feature 1.
+
+#### Step 1: Move to the branch for feature 2.
 
 #### Step 2: Install the files and open them in Pycharm
 
