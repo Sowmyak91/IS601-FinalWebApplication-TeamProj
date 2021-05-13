@@ -13,7 +13,7 @@
 ![Docker setup](screenshots/start.png)
 
 ### The calendar page opening up on local with current date.
-![Docker setup](screenshots/current date.png)
+![Docker setup](screenshots/currentdate.png)
 
 ### You can scroll to a previous date and a date in the future easily.
 ![Docker setup](screenshots/scrollleft.png)
