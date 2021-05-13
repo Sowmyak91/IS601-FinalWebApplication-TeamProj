@@ -10,43 +10,49 @@
 
 
 ### Step 3: To run the project, use command "npm install" to install the packages.
-![Docker setup](screenshots/install.png)
+![npm install](screenshots/install.png)
 
 
 
 ### Step 4: Use command "npm start" to run the project on your local.
-![Docker setup](screenshots/start.png)
+![npm start](screenshots/start.png)
 
 
 
 ### The calendar page opening up on local with current date.
-![Docker setup](screenshots/currentdate.png)
+![Current Date](screenshots/currentdate.png)
 
 
 
 ### You can scroll to a previous date and a date in the future easily.
-![Docker setup](screenshots/scrollleft.png)
-![Docker setup](screenshots/scrollright.png)
+![Scroll Left](screenshots/scrollleft.png)
+![Scroll Right](screenshots/scrollright.png)
+
+
+
+### You can go back to the current date no matter where you are in the calendar using "today"
+![Go Back To Current Date](screenshots/today.png)
+![Current Date](screenshots/currentdate.png)
 
 
 
 ### Credentials required to add events in the calendar. If not, pop up message will be displayed.
-![Docker setup](screenshots/field1.png)
-![Docker setup](screenshots/field2.png)
+![Bad Resonse](screenshots/field1.png)
+![Bad Response](screenshots/field2.png)
 
 
 
 ### Adding an event in the calendar
-![Docker setup](screenshots/addevent1.png)
-![Docker setup](screenshots/addevent2.png)
+![Add Event](screenshots/addevent1.png)
+![Add Event](screenshots/addevent2.png)
 
 
 
 ### Adding multiple events on the same day in the calendar
-![Docker setup](screenshots/multipleevents.png)
+![Multiple Events](screenshots/multipleevents.png)
 
 
 
 ### Deleting an event in the calendar
-![Docker setup](screenshots/delete.png)
-![Docker setup](screenshots/delete2.png)
+![Delete Event](screenshots/delete.png)
+![Delete Event](screenshots/delete2.png)
