@@ -308,6 +308,17 @@ def send_email(from_addr: str, to_addr: List[str], subject: str) -> None:
         server.login("sowmya1552@gmail.com", "dzorlhagwiseusud")
         
         server.sendmail(from_addr, to_addr, str(otp))
+
+
+@app.route('/api/v1/trees/chart', methods=['GET'])
+def chart():
+    user = {'username': 'Andrew'}
+    cursor = mysql.get_db().cursor()
+    cursor.execute('SELECT * FROM trees')
+    result = cursor.fetchall()
+    return render_template('data.html', title='Cool Tree Data')
+
+
 if __name__ == '__main__':
     app.secret_key='secret123'
     app.run(debug=True)

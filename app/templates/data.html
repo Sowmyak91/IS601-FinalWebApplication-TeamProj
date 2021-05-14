@@ -1,0 +1,59 @@
+<head>
+{% extends "layout.html" %}
+{% block content %}
+<script src = "https://cdn.jsdelivr.net/npm/chart.js@3.2.1/dist/chart.min.js"></script>
+</head>
+<body>
+<form action="/api/v1/trees/chart" method="post">
+<canvas id="chart" width="200" height="200"></canvas>
+<script>
+
+    const ctx = document.getElementById('chart');
+    const xlabels = [];
+    const yGirth = [];
+
+    chartIt();
+
+    async function chartIt() {
+        await getData();
+        const myChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: xlabels,
+                datasets: [{
+                    label: 'Some girthy data from some cool trees',
+                    data: yGirth,
+                    backgroundColor: [
+                        'rgba(250,112,0,0.5)',
+                        'rgba(83,222,238,0.5)',
+                        'rgba(241,140,192,0.5)'
+
+
+                    ],
+                    borderWidth: 1
+                }]
+            },
+        });
+    }
+
+    async function getData() {
+        const response = await fetch('/api/v1/trees');
+        const treeData = await response.text();
+
+        const table = treeData.split('},');
+        table.forEach(row => {
+            const columns = row.split(',');
+            const treeid = columns[0];
+            const treeNumber = columns[1];
+            xlabels.push(treeNumber);
+            const girth = columns[2].slice(10);
+            yGirth.push(girth);
+            const height = columns[3];
+            const volume = columns[4];
+            console.log(treeid, treeNumber, girth, height, volume);
+        })
+    }
+</script>
+</form>
+</body>
+{% endblock %}

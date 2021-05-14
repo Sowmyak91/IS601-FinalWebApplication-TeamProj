@@ -4,3 +4,4 @@ MySQL
 mysql-connector
 Flask-WTF
 Flask-Passlib
+simplejson
